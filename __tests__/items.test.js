@@ -41,7 +41,7 @@ describe('items', () => {
   afterAll(() => {
     pool.end();
   });
-  it.skip('POST /api/v1/items creates a new shopping item with the current user', async () => {
+  it('POST /api/v1/items creates a new shopping item with the current user', async () => {
     const [agent, user] = await registerAndLogin();
     const newItem = { description: 'eggs', qty: 12 };
     const resp = await agent.post('/api/v1/items').send(newItem);
@@ -55,7 +55,7 @@ describe('items', () => {
     });
   });
 
-  it.skip('GET /api/v1/items returns all items associated with the authenticated User', async () => {
+  it('GET /api/v1/items returns all items associated with the authenticated User', async () => {
     // create a user
     const [agent, user] = await registerAndLogin();
     // add a second user with items
@@ -119,7 +119,8 @@ describe('items', () => {
       user_id: user.id,
     });
     const resp = await agent.delete(`/api/v1/items/${item.id}`);
-    expect(resp.status).toBe(200);
+    console.log('resp.body', resp.body);
+    await expect(resp.status).toBe(200);
 
     const check = await Item.getById(item.id);
     expect(check).toBeNull();
